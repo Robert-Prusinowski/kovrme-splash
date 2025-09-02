@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KovrMe - The Future of Insurance</title>
+    <meta name="description" content="Revolutionary insurance marketplace connecting consumers with the perfect coverage through intelligent technology.">
+    <style>
+        /* Removed external font import to prevent loading errors */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-blue: #44a0d9;
+            --accent-orange: #f58220;
+            --dark-blue: #2c5aa0;
+            --light-gray: #f8fafb;
+            --medium-gray: #6b7280;
+            --dark-gray: #1f2937;
+            --white: #ffffff;
+            --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafb 50%, #e5f4fd 100%);
+            min-height: 100vh;
+            color: var(--dark-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Background elements */
+        .bg-decoration {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.03;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        .bg-circle:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            background: var(--primary-blue);
+            top: 10%;
+            right: -150px;
+            animation-delay: 0s;
+        }
+        
+        .bg-circle:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            background: var(--accent-orange);
+            bottom: 20%;
+            left: -100px;
+            animation-delay: -10s;
+        }
+        
+        .bg-circle:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            background: var(--primary-blue);
+            top: 60%;
+            right: 10%;
+            animation-delay: -5s;
+        }
+        
+        .main-container {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        .hero-section {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeInUp 1.2s ease-out 0.3s forwards;
+        }
+        
+        .logo-container {
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+        
+        .logo {
+            width: 400px;
+            height: auto;
+            height: auto;
+            transition: all 0.4s ease;
+            filter: drop-shadow(0 4px 12px rgba(68, 160, 217, 0.15));
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 8px 25px rgba(68, 160, 217, 0.25));
+        }
+        
+        .headline {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-orange);
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeInUp 1.2s ease-out 0.6s forwards;
+            background: none;
+            -webkit-background-clip: unset;
+            -webkit-text-fill-color: unset;
+            background-clip: unset;
+            position: relative;
+            top: unset;
+            right: unset;
+        }
+        
+        .subheadline {
+            font-size: 2rem;
+            color: var(--dark-gray);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            opacity: 0;
+            animation: fadeInUp 1.2s ease-out 0.9s forwards, shimmer 3s ease-in-out 2s infinite;
+            animation-iteration-count: 1, infinite;
+            animation-delay: 0.9s, 2.5s;
+            animation-duration: 1.2s, 10s;
+        }
+        
+        .description {
+            font-size: 1.2rem;
+            color: var(--medium-gray);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+            opacity: 0;
+            animation: fadeInUp 1.2s ease-out 1.2s forwards;
+        }
+        
+        .cta-section {
+<!--            margin-bottom: 0.5rem;-->
+            opacity: 0;
+            animation: fadeInUp 1.2s ease-out 1.5s forwards;
+        }
+
+        .email-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 480px;
+            margin: 0 auto 2rem;
+            padding: 8px;
+            background: var(--white);
+            border-radius: 60px;
+            box-shadow: var(--shadow-medium);
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: countUp 0.8s ease-out 1.7s forwards;
+        }
+
+        .email-form:hover {
+            box-shadow: var(--shadow-heavy);
+            transform: translateY(-2px);
+        }
+
+        .email-input {
+            flex: 1;
+            padding: 1.2rem 2rem;
+            font-size: 1.1rem;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: var(--dark-gray);
+            font-weight: 500;
+        }
+
+        .email-input:focus {
+            outline: none;
+            border: none;
+        }
+
+        .email-input::placeholder {
+            color: var(--medium-gray);
+            font-weight: 400;
+        }
+
+        .email-input.error {
+            color: #dc2626;
+        }
+
+        /* Remove browser autocomplete styling */
+        .email-input:-webkit-autofill,
+        .email-input:-webkit-autofill:hover,
+        .email-input:-webkit-autofill:focus,
+        .email-input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 1000px white inset !important;
+            -webkit-text-fill-color: var(--dark-gray) !important;
+            background-color: transparent !important;
+            background-image: none !important;
+            border-radius: 60px !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        .email-input:autofill {
+            background-color: transparent !important;
+            background-image: none !important;
+            color: var(--dark-gray) !important;
+        }
+
+        .submit-btn {
+            padding: 1.2rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--white);
+            background: linear-gradient(135deg, var(--accent-orange) 0%, #ff6b1a 100%);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 160px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 130, 32, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .success-message {
+            color: var(--accent-orange);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease;
+            visibility: hidden;
+        }
+
+        .success-message.show {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        .error-message {
+            color: #dc2626;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            visibility: hidden;
+        }
+
+        .error-message.show {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        .value-props {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto 2.5rem;
+            opacity: 0;
+            animation: fadeInUp 1.2s ease-out 1.8s forwards;
+        }
+
+        .value-prop {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+        }
+
+        .value-prop:nth-child(1) {
+            animation: slideInFromLeft 0.8s ease-out 2.1s forwards;
+        }
+
+        .value-prop:nth-child(2) {
+            animation: fadeInUp 0.8s ease-out 2.3s forwards;
+        }
+
+        .value-prop:nth-child(3) {
+            animation: slideInFromRight 0.8s ease-out 2.5s forwards;
+        }
+
+        .value-prop::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-orange));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .value-prop:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .value-prop:hover::before {
+            transform: scaleX(1);
+        }
+
+        .value-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-blue), #5bb0e3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .value-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--accent-orange), #ff6b1a);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .value-prop:hover .value-icon::before {
+            opacity: 1;
+        }
+
+        .value-icon span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .value-prop h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-gray);
+            margin-bottom: 0.75rem;
+        }
+
+        .value-prop p {
+            color: var(--medium-gray);
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .investor-note {
+            margin-top: 1.5rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(68, 160, 217, 0.05), rgba(245, 130, 32, 0.05));
+            border-radius: 20px;
+            border: 1px solid rgba(68, 160, 217, 0.1);
+            text-align: center;
+            opacity: 0;
+            animation: subtlePulse 4s ease-in-out 3s infinite, fadeInUp 1.2s ease-out 2.8s forwards;
+        }
+
+        .investor-note p {
+            color: var(--medium-gray);
+            font-size: 1rem;
+            font-style: italic;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeInUp 1.2s ease-out 2.2s forwards;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(68, 160, 217, 0.3);
+            border-radius: 50%;
+            color: #44a0d9;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+            background: rgba(68, 160, 217, 0.1);
+            border-color: #44a0d9;
+            box-shadow: 0 10px 20px rgba(68, 160, 217, 0.3);
+        }
+
+        .contact-section {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 2.5s forwards;
+        }
+
+        .contact-section p {
+            color: var(--medium-gray);
+             font-size: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .contact-section a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-section a:hover {
+            color: var(--accent-orange);
+        }
+
+        /* Enhanced Animations */
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        @keyframes subtlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes slideInFromLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInFromRight {
+            0% {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes countUp {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+
+            .logo {
+                width: 200px;
+            }
+
+            .headline {
+                font-size: 1.2rem;
+            }
+
+<!--            .subheadline {-->
+<!--                font-size: 2.5rem;-->
+<!--            }-->
+
+            .subheadline {
+                font-size: 1rem;
+            }
+
+            .description {
+                font-size: 1.1rem;
+                margin-bottom: 3rem;
+            }
+
+            .email-form {
+                flex-direction: column;
+                max-width: 350px;
+                padding: 12px;
+                gap: 0;
+            }
+
+            .email-input {
+                padding: 1.2rem 1.5rem;
+                text-align: center;
+            }
+
+            .submit-btn {
+                margin-top: 8px;
+                padding: 1.2rem 1.5rem;
+                min-width: 140px;
+            }
+
+            .value-props {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                margin-bottom: 3rem;
+            }
+
+            .value-prop {
+                padding: 2rem 1.5rem;
+            }
+
+            .value-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .headline {
+                font-size: 2.5rem;
+            }
+
+            .logo {
+                width: 150px;
+            }
+
+            .bg-circle {
+                opacity: 0.02;
+            }
+        }
+
+        /* Loading animation for logo */
+        @keyframes logoLoad {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .logo-container {
+            animation: logoLoad 1s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+<div class="bg-decoration">
+    <div class="bg-circle"></div>
+    <div class="bg-circle"></div>
+    <div class="bg-circle"></div>
+</div>
+
+<div class="main-container">
+    <div class="hero-section">
+        <div class="logo-container">
+            <img src="logo.png" alt="KovrMe - Insurance Marketplace" class="logo">
+        </div>
+
+        <!--            <h1 class="headline">Coming Soon</h1>-->
+        <!--            <h2 class="subheadline">Coming Soon</h2>-->
+        <p class="description">
+            KovrMe is building a smarter, faster insurance marketplace.
+        </p>
+
+        <div class="cta-section">
+            <form class="email-form" id="emailForm">
+                <input
+                        type="email"
+                        class="email-input"
+                        placeholder="Enter your email"
+                        required
+                        id="emailInput"
+                >
+                <button type="submit" class="submit-btn">
+                    Notify Me
+                </button>
+            </form>
+            <div class="success-message" id="successMessage">
+                We'll let you know as soon as we're live.
+            </div>
+            <div class="error-message" id="errorMessage">
+                Please enter a valid email address
+            </div>
+        </div>
+
+<!--        <div class="value-props">-->
+<!--            <div class="value-prop">-->
+<!--                <div class="value-icon">-->
+<!--                    <span>🎯</span>-->
+<!--                </div>-->
+<!--                <h3>AI-Powered Matching</h3>-->
+<!--                <p>Proprietary algorithms analyze your unique profile to match you with optimal insurance products from our curated network of top-tier providers.</p>-->
+<!--            </div>-->
+
+<!--            <div class="value-prop">-->
+<!--                <div class="value-icon">-->
+<!--                    <span>⚡</span>-->
+<!--                </div>-->
+<!--                <h3>Instant Digital Experience</h3>-->
+<!--                <p>Get accurate quotes in seconds, compare coverage options side-by-side, and purchase policies entirely online with zero paperwork.</p>-->
+<!--            </div>-->
+
+<!--            <div class="value-prop">-->
+<!--                <div class="value-icon">-->
+<!--                    <span>🔒</span>-->
+<!--                </div>-->
+<!--                <h3>Transparent Marketplace</h3>-->
+<!--                <p>Complete price transparency with no hidden fees. Access real-time market data and make informed decisions with confidence.</p>-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <!--            <div class="investor-note">-->
+        <!--                <p>"Disrupting the $1.3 trillion global insurance market through technology-first customer experience"</p>-->
+        <!--            </div>-->
+
+        <div class="social-links">
+            <a href="https://twitter.com/kovrme" class="social-link" aria-label="Twitter">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+            </a>
+            <a href="https://linkedin.com/company/kovrme" class="social-link" aria-label="LinkedIn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+            </a>
+        </div>
+
+        <div class="contact-section">
+            <p>Questions? Reach us at <a href="mailto:cofounders@kovrme.com">cofounders@kovrme.com</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('emailForm');
+            const emailInput = document.getElementById('emailInput');
+            const successMessage = document.getElementById('successMessage');
+
+            // Enhanced form submission with validation
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const email = emailInput.value.trim();
+                const errorMessage = document.getElementById('errorMessage');
+
+                // Clear previous states
+                emailInput.classList.remove('error');
+                errorMessage.classList.remove('show');
+                successMessage.classList.remove('show');
+
+                // Validate email
+                if (!email) {
+                    showError('Please enter your email address');
+                    return;
+                }
+
+                if (!isValidEmail(email)) {
+                    showError('Please enter a valid email address');
+                    return;
+                }
+
+                // Proceed with submission
+                const submitBtn = form.querySelector('.submit-btn');
+                const originalText = submitBtn.textContent;
+
+                submitBtn.textContent = 'Adding...';
+                submitBtn.style.background = 'linear-gradient(135deg, #44a0d9, #7fc3e6)';
+                submitBtn.disabled = true;
+
+                // Animate form submission
+                form.style.transform = 'scale(0.98)';
+
+                setTimeout(() => {
+                    // Reset form
+                    emailInput.value = '';
+                    form.style.transform = 'scale(1)';
+
+                    // Show success message
+                    successMessage.classList.add('show');
+
+                    // Reset button
+                    submitBtn.textContent = originalText;
+                    submitBtn.style.background = 'linear-gradient(135deg, var(--accent-orange) 0%, #ff6b1a 100%)';
+                    submitBtn.disabled = false;
+
+                    // Hide success message after delay
+                    setTimeout(() => {
+                        successMessage.classList.remove('show');
+                    }, 2000);
+                }, 700);
+
+                // Store email (in real app, send to backend)
+                console.log('New subscriber:', email);
+            });
+
+            function showError(message) {
+                const errorMessage = document.getElementById('errorMessage');
+                errorMessage.textContent = message;
+                emailInput.classList.add('error');
+                errorMessage.classList.add('show');
+
+                // Shake animation
+                emailInput.style.animation = 'shake 0.5s ease-in-out';
+                setTimeout(() => {
+                    emailInput.style.animation = '';
+                }, 500);
+
+                // Hide error after 3 seconds
+                setTimeout(() => {
+                    errorMessage.classList.remove('show');
+                    emailInput.classList.remove('error');
+                }, 3000);
+            }
+
+            function isValidEmail(email) {
+                // Enhanced email validation regex
+                const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+                return emailRegex.test(email) && email.length <= 254;
+            }
+
+            // Enhanced input interactions
+            emailInput.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+                this.parentElement.style.boxShadow = '0 15px 35px rgba(68, 160, 217, 0.15)';
+            });
+
+            emailInput.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+                this.parentElement.style.boxShadow = 'var(--shadow-medium)';
+            });
+
+            // Real-time validation feedback - remove border changes
+            emailInput.addEventListener('input', function() {
+                const email = this.value.trim();
+                const errorMessage = document.getElementById('errorMessage');
+
+                // Clear error state when user starts typing
+                if (this.classList.contains('error')) {
+                    this.classList.remove('error');
+                    errorMessage.classList.remove('show');
+                }
+
+                // Remove any custom border styling
+                this.style.borderColor = '';
+                this.style.boxShadow = '';
+            });
+
+            // Parallax effect for background elements
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const circles = document.querySelectorAll('.bg-circle');
+
+                circles.forEach((circle, index) => {
+                    const speed = (index + 1) * 0.1;
+                    circle.style.transform = `translateY(${scrolled * speed}px)`;
+                });
+            });
+
+            // Enhanced mouse tracking with smooth interpolation
+            let mouseX = 0, mouseY = 0;
+            let logoX = 0, logoY = 0;
+
+            document.addEventListener('mousemove', function(e) {
+                mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+                mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+            });
+
+            // Smooth logo movement animation
+            function animateLogo() {
+                logoX += (mouseX * 3 - logoX) * 0.1;
+                logoY += (mouseY * 3 - logoY) * 0.1;
+
+                const logo = document.querySelector('.logo');
+                if (logo) {
+                    logo.style.transform = `translate(${logoX}px, ${logoY}px)`;
+                }
+
+                requestAnimationFrame(animateLogo);
+            }
+
+            animateLogo();
+
+            // Add intersection observer for scroll-triggered animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe value proposition cards
+            document.querySelectorAll('.value-prop').forEach(card => {
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
